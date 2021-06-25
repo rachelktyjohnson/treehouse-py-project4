@@ -86,6 +86,28 @@ def app():
             #  view details of a product
             print("--------------------------")
             print("View details of product".upper())
+            id_options = []
+            for product in session.query(Product):
+                id_options.append(product.product_id)
+            id_error = True
+            id_choice = None
+            while id_error:
+                print(f'Options: {id_options}')
+                user_product_id = int(input("Enter Product ID: "))
+                if user_product_id in id_options:
+                    id_choice = user_product_id
+                    id_error = False
+                else:
+                    print("Oops. That's not a valid Product ID. Try again!")
+            the_product = session.query(Product).filter(Product.product_id == id_choice).first()
+            print("--------------------------")
+            print(f'ID: {the_product.product_id}')
+            print(f'Product Name: {the_product.product_name}')
+            print(f'Product Quantity: {the_product.product_quantity}')
+            print(f'Product Price: {the_product.product_price}')
+            print(f'Last Updated: {the_product.date_updated}')
+            print("--------------------------")
+            input("Press ENTER to continue")
         elif choice == 'a':
             #  add a product to database
             print("--------------------------")
