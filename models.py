@@ -7,6 +7,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
 
+
 class Product(Base):
     __tablename__ = 'products'
 
