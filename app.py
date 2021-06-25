@@ -78,7 +78,29 @@ def menu():
             print("Please choose a valid option!")
 
 
+def app():
+    app_running = True
+    while app_running:
+        choice = menu()
+        if choice == 'v':
+            #  view details of a product
+            print("--------------------------")
+            print("View details of product".upper())
+        elif choice == 'a':
+            #  add a product to database
+            print("--------------------------")
+            print("Add product to database".upper())
+        elif choice == 'b':
+            #  backup database
+            print("--------------------------")
+            print("Backup database".upper())
+        else:
+            #  exit
+            app_running = False
+            print("Bye!")
+
+
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
     load_csv()
-    menu()
+    app()
