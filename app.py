@@ -1,46 +1,9 @@
 from models import (Base, session, Product, engine)
+from cleaners import clean_quantity, clean_date, clean_price
 import csv
-import datetime
-import time
-
-
-def clean_price(price_str):
-    try:
-        price_float = float(price_str[1::])
-        price_int = int(price_float*100)
-    except ValueError:
-        print("******** PRICE ERROR ********")
-        print("Be sure to enter the price with a $ sign")
-        print("Ex: $10.99")
-    else:
-        return price_int
-
-
-def clean_quantity(quantity_str):
-    try:
-        quantity_int = int(quantity_str)
-    except ValueError:
-        print("******** QUANTITY ERROR ********")
-        print("Be sure to enter the quantity as an integer")
-        print("Ex: 11")
-    else:
-        return quantity_int
-
-
-def clean_date(date_str):
-    try:
-        split_date = date_str.split('/')
-        date_date = datetime.date(int(split_date[2]), int(split_date[0]), int(split_date[1]))
-    except ValueError:
-        print("******** DATE ERROR ********")
-        print("Be sure to enter the date in a MM/DD/YYYY format")
-        print("Ex: 12/28/2018")
-    else:
-        return date_date
 
 
 def load_csv():
-    #  open the CSV file
     with open('inventory.csv') as csv_file:
         data = csv.reader(csv_file)
         for row in data:
@@ -78,6 +41,31 @@ def menu():
             print("Please choose a valid option!")
 
 
+def search_product():
+    id_options = []
+    for product in session.query(Product):
+        id_options.append(product.product_id)
+    id_error = True
+    id_choice = None
+    while id_error:
+        print(f'Options: {id_options}')
+        user_product_id = int(input("Enter Product ID: "))
+        if user_product_id in id_options:
+            id_choice = user_product_id
+            id_error = False
+        else:
+            print("Oops. That's not a valid Product ID. Try again!")
+    the_product = session.query(Product).filter(Product.product_id == id_choice).first()
+    print("--------------------------")
+    print(f'ID: {the_product.product_id}')
+    print(f'Product Name: {the_product.product_name}')
+    print(f'Product Quantity: {the_product.product_quantity}')
+    print('Product Price: $' + '{:.2f}'.format(the_product.product_price / 100, 2))
+    print(f'Last Updated: {the_product.date_updated}')
+    print("--------------------------")
+    input("Press ENTER to continue")
+
+
 def app():
     app_running = True
     while app_running:
@@ -86,36 +74,18 @@ def app():
             #  view details of a product
             print("--------------------------")
             print("View details of product".upper())
-            id_options = []
-            for product in session.query(Product):
-                id_options.append(product.product_id)
-            id_error = True
-            id_choice = None
-            while id_error:
-                print(f'Options: {id_options}')
-                user_product_id = int(input("Enter Product ID: "))
-                if user_product_id in id_options:
-                    id_choice = user_product_id
-                    id_error = False
-                else:
-                    print("Oops. That's not a valid Product ID. Try again!")
-            the_product = session.query(Product).filter(Product.product_id == id_choice).first()
-            print("--------------------------")
-            print(f'ID: {the_product.product_id}')
-            print(f'Product Name: {the_product.product_name}')
-            print(f'Product Quantity: {the_product.product_quantity}')
-            print('Product Price: $' + '{:.2f}'.format(the_product.product_price/100, 2))
-            print(f'Last Updated: {the_product.date_updated}')
-            print("--------------------------")
-            input("Press ENTER to continue")
+            search_product()
+
         elif choice == 'a':
             #  add a product to database
             print("--------------------------")
             print("Add product to database".upper())
+
         elif choice == 'b':
             #  backup database
             print("--------------------------")
             print("Backup database".upper())
+
         else:
             #  exit
             app_running = False
@@ -124,5 +94,5 @@ def app():
 
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
-    load_csv()
+    #  load_csv()
     app()
