@@ -63,11 +63,19 @@ def load_csv():
 
 
 def menu():
-    print("--------MAIN MENU--------")
-    print("[V]iew the details of a single product")
-    print("[A]dd a new product to the database")
-    print("[B]ackup the entire database")
-    menu_choice = input("Make your choice (V, A, B): ")
+    while True:
+        print("--------------------------")
+        print("[v]iew the details of a single product")
+        print("[a]dd a new product to the database")
+        print("[b]ackup the entire database")
+        print("e[x]it program")
+        print("--------------------------")
+        menu_choice = input("Make your choice [v/a/b/x]: ")
+        menu_options = ['v', 'a', 'b', 'x']
+        if menu_choice in menu_options:
+            return menu_choice
+        else:
+            print("Please choose a valid option!")
 
 
 if __name__ == '__main__':
