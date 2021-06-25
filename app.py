@@ -104,7 +104,7 @@ def app():
             print(f'ID: {the_product.product_id}')
             print(f'Product Name: {the_product.product_name}')
             print(f'Product Quantity: {the_product.product_quantity}')
-            print(f'Product Price: {the_product.product_price}')
+            print('Product Price: $' + '{:.2f}'.format(the_product.product_price/100, 2))
             print(f'Last Updated: {the_product.date_updated}')
             print("--------------------------")
             input("Press ENTER to continue")
