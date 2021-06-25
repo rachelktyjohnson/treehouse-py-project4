@@ -62,6 +62,15 @@ def load_csv():
         session.commit()
 
 
+def menu():
+    print("--------MAIN MENU--------")
+    print("[V]iew the details of a single product")
+    print("[A]dd a new product to the database")
+    print("[B]ackup the entire database")
+    menu_choice = input("Make your choice (V, A, B): ")
+
+
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
     load_csv()
+    menu()
