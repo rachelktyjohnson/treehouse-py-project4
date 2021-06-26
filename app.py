@@ -28,6 +28,8 @@ def load_csv():
 
 
 def backup_csv():
+    print("Backing up the database to 'backup.csv'...")
+    time.sleep(1.5)
     with open('backup.csv', 'w', newline='') as csv_file:
         headers = ['product_name', 'product_price', 'product_quantity', 'date_updated']
         writer = csv.DictWriter(
@@ -43,6 +45,8 @@ def backup_csv():
                 'product_quantity': product.product_quantity,
                 'date_updated': product.date_updated
             })
+    print("All done!")
+    time.sleep(1.5)
 
 
 def menu():
