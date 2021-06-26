@@ -109,21 +109,36 @@ def add_product():
     print("Adding to database...")
     time.sleep(1.5)
 
-    new_product = Product(
-        product_name=input_name,
-        product_quantity=input_quantity,
-        product_price=input_price,
-        date_updated=date
-    )
-    session.add(new_product)
-    session.commit()
-
-    print(f'"{input_name}" added!')
-    time.sleep(1.5)
+    # check if the product name already exists
+    product_in_db = session.query(Product).filter(Product.product_name == input_name).one_or_none()
+    if product_in_db is None:
+        new_product = Product(
+            product_name=input_name,
+            product_quantity=input_quantity,
+            product_price=input_price,
+            date_updated=date
+        )
+        session.add(new_product)
+        session.commit()
+        print(f'"{input_name}" added!')
+        time.sleep(1.5)
+    else:
+        print(f'"{input_name}" already exists! Updating...')
+        time.sleep(1.5)
+        product_in_db.product_name = input_name
+        product_in_db.product_quantity = input_quantity
+        product_in_db.product_price = input_price
+        product_in_db.date_updated = date
+        session.add(product_in_db)
+        session.commit()
+        print(f'"{input_name}" updated!')
+        time.sleep(1.5)
 
 
 def app():
     app_running = True
+    print("└[∵┌]└[ ∵ ]┘[┐∵]┘")
+    print("STORE INVENTORY")
     while app_running:
         choice = menu()
         if choice == 'v':
@@ -148,6 +163,7 @@ def app():
             #  exit
             app_running = False
             print("Bye!")
+            print("└[∵┌]└[ ∵ ]┘[┐∵]┘")
 
 
 if __name__ == '__main__':
