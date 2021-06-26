@@ -27,6 +27,24 @@ def load_csv():
         session.commit()
 
 
+def backup_csv():
+    with open('backup.csv', 'w', newline='') as csv_file:
+        headers = ['product_name', 'product_price', 'product_quantity', 'date_updated']
+        writer = csv.DictWriter(
+            csv_file,
+            delimiter=',',
+            fieldnames=headers
+        )
+        writer.writeheader()
+        for product in session.query(Product):
+            writer.writerow({
+                'product_name': product.product_name,
+                'product_price': product.product_price,
+                'product_quantity': product.product_quantity,
+                'date_updated': product.date_updated
+            })
+
+
 def menu():
     while True:
         print("--------------------------")
@@ -124,6 +142,7 @@ def app():
             #  backup database
             print("--------------------------")
             print("Backup database".upper())
+            backup_csv()
 
         else:
             #  exit
@@ -133,5 +152,5 @@ def app():
 
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
-    #  load_csv()
+    load_csv()
     app()

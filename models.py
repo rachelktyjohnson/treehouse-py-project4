@@ -12,8 +12,8 @@ class Product(Base):
     __tablename__ = 'products'
 
     product_id = Column(Integer, primary_key=True)
-    product_name = Column('Title', String)
-    product_quantity = Column('Author', String)
+    product_name = Column('Name', String)
+    product_quantity = Column('Quantity', String)
     product_price = Column('Price', Integer)
     date_updated = Column('Date', Date)
 
