@@ -71,12 +71,16 @@ def search_product():
     id_choice = None
     while id_error:
         print(f'Options: {id_options}')
-        user_product_id = int(input("Enter Product ID: "))
-        if user_product_id in id_options:
-            id_choice = user_product_id
-            id_error = False
+        try:
+            user_product_id = int(input("Enter Product ID: "))
+        except ValueError:
+            print("Oops. The Product ID should be a number. Try again!")
         else:
-            print("Oops. That's not a valid Product ID. Try again!")
+            if user_product_id in id_options:
+                id_choice = user_product_id
+                id_error = False
+            else:
+                print("Oops. That Product ID doesn't exist. Try again!")
     the_product = session.query(Product).filter(Product.product_id == id_choice).first()
     print("--------------------------")
     print(f'ID: {the_product.product_id}')
