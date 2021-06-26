@@ -3,6 +3,8 @@ import datetime
 
 def clean_price(price_str):
     try:
+        if price_str[0] != '$':
+            raise ValueError
         price_float = float(price_str[1::])
         price_int = int(price_float*100)
     except ValueError:

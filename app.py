@@ -1,6 +1,8 @@
 from models import (Base, session, Product, engine)
 from cleaners import clean_quantity, clean_date, clean_price
 import csv
+import datetime
+import time
 
 
 def load_csv():
@@ -27,6 +29,8 @@ def load_csv():
 
 def menu():
     while True:
+        print("--------------------------")
+        print("----------MENU------------")
         print("--------------------------")
         print("[v]iew the details of a single product")
         print("[a]dd a new product to the database")
@@ -66,6 +70,28 @@ def search_product():
     input("Press ENTER to continue")
 
 
+def add_product():
+    input_name = input("Product Name: ")
+
+    quantity_error = True
+    while quantity_error:
+        input_quantity = clean_quantity(input("Product Quantity: "))
+        if type(input_quantity) == int:
+            quantity_error = False
+
+    price_error = True
+    while price_error:
+        input_price = clean_price(input("Product Price ($xx.xx): "))
+        if type(input_price) == int:
+            price_error = False
+
+    date = datetime.date.today()
+    print("Adding to database...")
+    time.sleep(1.5)
+    print(f'"{input_name}" added!')
+    time.sleep(1.5)
+
+
 def app():
     app_running = True
     while app_running:
@@ -80,6 +106,7 @@ def app():
             #  add a product to database
             print("--------------------------")
             print("Add product to database".upper())
+            add_product()
 
         elif choice == 'b':
             #  backup database
