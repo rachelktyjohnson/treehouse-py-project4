@@ -74,12 +74,14 @@ def add_product():
     input_name = input("Product Name: ")
 
     quantity_error = True
+    input_quantity = None
     while quantity_error:
         input_quantity = clean_quantity(input("Product Quantity: "))
         if type(input_quantity) == int:
             quantity_error = False
 
     price_error = True
+    input_price = None
     while price_error:
         input_price = clean_price(input("Product Price ($xx.xx): "))
         if type(input_price) == int:
@@ -88,6 +90,16 @@ def add_product():
     date = datetime.date.today()
     print("Adding to database...")
     time.sleep(1.5)
+
+    new_product = Product(
+        product_name=input_name,
+        product_quantity=input_quantity,
+        product_price=input_price,
+        date_updated=date
+    )
+    session.add(new_product)
+    session.commit()
+
     print(f'"{input_name}" added!')
     time.sleep(1.5)
 
